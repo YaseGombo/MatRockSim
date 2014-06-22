@@ -1,6 +1,6 @@
 % ---- グローバル変数の設定（いじらない） ----
 global Isp g0
-global FT Tend At CLa area
+global FT Tend At CLa Area
 global length_GCM length_A
 global IXX IYY IZZ
 global IXXdot IYYdot IZZdot
@@ -14,7 +14,7 @@ global para_Cd para_S
 % FT: 推力[N]
 % Tend: 燃焼時間[sec]
 % At: スロート径[m2]
-% area: 機体の断面積[m2]
+% Area: 機体の断面積[m2]
 % CLa: 揚力傾斜[/rad]
 % CD: 抗力係数[-]
 % length_GCM: エンジンピボット点からの重心位置ベクトル[m](3x1)
@@ -29,7 +29,7 @@ g0 = 9.80665;
 FT = 150;
 Tend = 4;
 At = 0.01;
-area = 0.010;
+Area = 0.010;
 CLa = 3.5;
 length_GCM = [-0.70; 0; 0]; length_A = [-0.50; 0; 0];
 IXX = 5; IYY = 5; IZZ = 1;

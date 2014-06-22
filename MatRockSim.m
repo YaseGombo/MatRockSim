@@ -21,7 +21,7 @@ addpath ./mapping
 
 % ---- ƒpƒ‰ƒ[ƒ^İ’è“Ç‚İ‚İ ----
 % params_test
-params
+% params
 % params_M3S
 
 % ---- í”÷•ª•û’ö® ----
