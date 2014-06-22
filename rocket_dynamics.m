@@ -1,75 +1,91 @@
 % ----
-% ode‚Ì‚½‚ß‚ÌƒƒPƒbƒg”òãÄ‚Ìí”÷•ª•û’ö®
-% ˆÊ’u‚Æp¨‚ğ‹‚ß‚é‚½‚ß‚ÉAuˆÊ’uA‘¬“xAp¨AŠp‘¬“xv‚ğó‘Ô—Ê‚ÉB
-% 
-% ‚â‚Á‚Ä‚¢‚é‚±‚Æ
-% ‹@‘Ì‚É‚©‚©‚é„—ÍA‹ó‹C—ÍAd—Í‚ÌZo 
-% -> ‹@‘Ì‚É‚©‚©‚éƒ‚[ƒƒ“ƒg‚ÌZo
-% -> ˆÊ’u‚Ì‰^“®•û’ö®A‘¬“x‚Ì‰^“®•û’ö®Ap¨‚Ì‰^“®•û’ö®AŠp‘¬“x‚Ì‰^“®•û’ö®
-% 
-% …•½À•WŒn‚Ìæ‚è•û‚Íxyz‚Ì‡”Ô‚ÉUp-East-North
+% odeã®ãŸã‚ã®ãƒ­ã‚±ãƒƒãƒˆé£›ç¿”ã®å¸¸å¾®åˆ†æ–¹ç¨‹å¼
+% ä½ç½®ã¨å§¿å‹¢ã‚’æ±‚ã‚ã‚‹ãŸã‚ã«ã€ã€Œä½ç½®ã€é€Ÿåº¦ã€å§¿å‹¢ã€è§’é€Ÿåº¦ã€ã‚’çŠ¶æ…‹é‡ã«ã€‚
+%
+% ã‚„ã£ã¦ã‚‹ã“ã¨
+% æ©Ÿä½“ã«ã‹ã‹ã‚‹æ¨åŠ›ã€ç©ºæ°—åŠ›ã€é‡åŠ›ã®ç®—å‡º
+% -> æ©Ÿä½“ã«ã‹ã‹ã‚‹ãƒ¢ãƒ¼ãƒ¡ãƒ³ãƒˆã®ç®—å‡º
+% -> ä½ç½®ã®é‹å‹•æ–¹ç¨‹å¼ã€é€Ÿåº¦ã®é‹å‹•æ–¹ç¨‹å¼ã€å§¿å‹¢ã®é‹å‹•æ–¹ç¨‹å¼ã€è§’é€Ÿåº¦ã®é‹å‹•æ–¹ç¨‹å¼
+%
+% æ°´å¹³åº§æ¨™ç³»ã®å–ã‚Šæ–¹ã¯xyzã®é †ç•ªã«Up-East-North
 % ----
-function [ dx ] = rocket_dynamics( t, x, u )
-% x(1): mass ¿—Ê[kg]
-% x(2): X_H Ë“_À•WˆÊ’u[m]
-% x(3): Y_H Ë“_À•WˆÊ’u[m]
-% x(4): Z_H Ë“_À•WˆÊ’u[m]
-% x(5): VX_H Ë“_À•W‘Î’n‘¬“x[m/s]
-% x(6): VY_H Ë“_À•W‘Î’n‘¬“x[m/s]
-% x(7): VZ_H Ë“_À•W‘Î’n‘¬“x[m/s]
+function [ dx ] = rocket_dynamics( t, x )
+% t: time æ™‚åˆ»[s]
+% x(1): mass è³ªé‡[kg]
+% x(2): X_H å°„ç‚¹åº§æ¨™ä½ç½®[m]
+% x(3): Y_H å°„ç‚¹åº§æ¨™ä½ç½®[m]
+% x(4): Z_H å°„ç‚¹åº§æ¨™ä½ç½®[m]
+% x(5): VX_H å°„ç‚¹åº§æ¨™å¯¾åœ°é€Ÿåº¦[m/s]
+% x(6): VY_H å°„ç‚¹åº§æ¨™å¯¾åœ°é€Ÿåº¦[m/s]
+% x(7): VZ_H å°„ç‚¹åº§æ¨™å¯¾åœ°é€Ÿåº¦[m/s]
 % x(8): q0 quaternion Body to Horizon[-]
 % x(9): q1 quaternion Body to Horizon[-]
 % x(10): q2 quaternion Body to Horizon[-]
 % x(11): q3 quaternion Body to Horizon[-]
-% x(12): omegaX ‹@‘ÌÀ•WŒn‚ÌŠp‘¬“x[rad/s]
-% x(13): omegaY ‹@‘ÌÀ•WŒn‚ÌŠp‘¬“x[rad/s]
-% x(14): omegaZ ‹@‘ÌÀ•WŒn‚ÌŠp‘¬“x[rad/s]
+% x(12): omegaX æ©Ÿä½“åº§æ¨™ç³»ã®è§’é€Ÿåº¦[rad/s]
+% x(13): omegaY æ©Ÿä½“åº§æ¨™ç³»ã®è§’é€Ÿåº¦[rad/s]
+% x(14): omegaZ æ©Ÿä½“åº§æ¨™ç³»ã®è§’é€Ÿåº¦[rad/s]
 % ----
-% u(1): Ft „—Í[N]
-% 
 
-% ‹@‘Ì‚Ìƒpƒ‰ƒ[ƒ^“Ç‚İ‚İ
-%pa = params_rocket();
+% æ©Ÿä½“ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿
+constants = params_rocket();
+m0 = constants.m0;
+Isp = constants.Isp;
+g0 = constants.g0;
+FT = constants.FT;
+Tend = constants.Tend;
+At = constants.At;
+CLa = constants.CLa;
+Area = constants.Area;
+length_GCM = constants.length_GCM;
+length_A = constants.length_A;
+IXX = constants.Ijj(1);
+IYY = constants.Ijj(2);
+IZZ = constants.Ijj(3);
+azimth = constants.azimth;
+elevation = constants.elevation;
 
 IXXdot = 0;
 IYYdot = 0;
 IZZdot = 0;
 
-% ---- „—Í ----
-% ƒWƒ“ƒoƒ‹Šp“x delta_Y, delta_P[rad]
+% ---- æ¨åŠ› ----
+% ã‚¸ãƒ³ãƒãƒ«è§’åº¦ delta_Y, delta_P[rad]
 deltaY = 0;
 deltaP = 0;
 
-% ‘å‹Cˆ³ P[Pa] ‘å‹C–§“x rho[kg/m3]
+% å¤§æ°—åœ§ P[Pa] å¤§æ°—å¯†åº¦ rho[kg/m3]
+% P = 101325;
+% rho = 1.2;
 [~, a, P, rho] = atmosphere_Rocket(x(2));
 
-% ’èŠi„—Í FT[N] ‚»‚Ì‚É‚¨‚¯‚é„—Í Ft[N]
-% „iÜ‚Ì¿—Ê—¬—Ê delta_m[kg/s]
-Ft = thrust(t, [pa.Tend], [pa.FT]); 
-delta_m = -Ft / pa.Isp / pa.g0;
+% å®šæ ¼æ¨åŠ› FT[N] ãã®æ™‚åˆ»ã«ãŠã‘ã‚‹æ¨åŠ› Ft[N]
+% æ¨é€²å‰¤ã®è³ªé‡æµé‡ delta_m[kg/s]
+Ft = thrust(t, [Tend], [FT]);
+delta_m = -Ft / Isp / g0;
 
-% ƒWƒ“ƒoƒ‹Šp‚ğl—¶‚µ‚½‹@‘ÌÀ•WŒn‚É‚¨‚¯‚é„—Í FTB[N]
+% ã‚¸ãƒ³ãƒãƒ«è§’ã‚’è€ƒæ…®ã—ãŸæ©Ÿä½“åº§æ¨™ç³»ã«ãŠã‘ã‚‹æ¨åŠ› FTB[N]
 FTB = Ft * [cos(deltaY)*cos(deltaP); -sin(deltaY); -cos(deltaY)*sin(deltaP)];
 
-% ---- ‹ó‹C—Í ----
-% …•½À•WŒn‚É‚¨‚¯‚é•—ƒxƒNƒgƒ‹VWH[m/s]i‚“x•ûŒü‚Ì•ª•z‚Í–³‚¢‚à‚Ì‚Æ‚·‚éj
-% …•½À•WŒn‚É‚¨‚¯‚é‹@‘Ì‚Ì‘Î‹C‘¬“xƒxƒNƒgƒ‹VA[m/s]
+% ---- ç©ºæ°—åŠ› ----
+% æ°´å¹³åº§æ¨™ç³»ã«ãŠã‘ã‚‹é¢¨ãƒ™ã‚¯ãƒˆãƒ«VWH[m/s]ï¼ˆé«˜åº¦æ–¹å‘ã®åˆ†å¸ƒã¯ç„¡ã„ã‚‚ã®ã¨ã™ã‚‹ï¼‰
+% æ°´å¹³åº§æ¨™ç³»ã«ãŠã‘ã‚‹æ©Ÿä½“ã®å¯¾æ°—é€Ÿåº¦ãƒ™ã‚¯ãƒˆãƒ«VA[m/s]
 VWH = [0; 0; 0];
-VA = [x(5); x(6); x(7)] - VWH; % ‘Î‹C‘¬“x
+VA = [x(5); x(6); x(7)] - VWH; % å¯¾æ°—é€Ÿåº¦
 
-% ‹@‘ÌÀ•WŒn‚©‚ç…•½À•WŒn‚Ö‚ÌÀ•W•ÏŠ·‚ğ•\‚·ƒNƒH[ƒ^ƒjƒIƒ“ quat (quat_B2H)
-quat = [x(8) x(9) x(10) x(11)]; % q_B2H
+% æ©Ÿä½“åº§æ¨™ç³»ã‹ã‚‰æ°´å¹³åº§æ¨™ç³»ã¸ã®åº§æ¨™å¤‰æ›ã‚’è¡¨ã™ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ quat (quat_B2H)
+quat = [x(8); x(9); x(10); x(11)]; % q_B2H
 
-% ‹@‘ÌÀ•WŒn‚©‚ç‚İ‚½‘¬“xƒxƒNƒgƒ‹VAB‚ğ‹‚ß‚Ä‘¬“xÀ•WŒn‚Ì’è‹`‚©‚ç
-% ‹@‘ÌÀ•WŒn‚©‚ç‚İ‚½‘¬“xÀ•WŒn‚ÌŠî’êƒxƒNƒgƒ‹[xAB yAB zAB]‚ğ‚à‚Æ‚ß‚Ä
-% ‘¬“xÀ•WŒn‚©‚ç‹@‘ÌÀ•WŒn‚Ö‚Ì•ûŒü—]Œ·s—ñDCM_A2B‚ğ‹‚ß‚Ä‚¢‚éB
-% ‹@‘ÌÀ•WŒn‚É‚¨‚¯‚é‹ó‹C—Í FAB[N]
+% æ©Ÿä½“åº§æ¨™ç³»ã‹ã‚‰ã¿ãŸé€Ÿåº¦ãƒ™ã‚¯ãƒˆãƒ«VABã‚’æ±‚ã‚ã¦é€Ÿåº¦åº§æ¨™ç³»ã®å®šç¾©ã‹ã‚‰
+% æ©Ÿä½“åº§æ¨™ç³»ã‹ã‚‰ã¿ãŸé€Ÿåº¦åº§æ¨™ç³»ã®åŸºåº•ãƒ™ã‚¯ãƒˆãƒ«[xAB yAB zAB]ã‚’ã‚‚ã¨ã‚ã¦
+% é€Ÿåº¦åº§æ¨™ç³»ã‹ã‚‰æ©Ÿä½“åº§æ¨™ç³»ã¸ã®æ–¹å‘ä½™å¼¦è¡Œåˆ—DCM_A2Bã‚’æ±‚ã‚ã¦ã„ã‚‹ã€‚
+% æ©Ÿä½“åº§æ¨™ç³»ã«ãŠã‘ã‚‹ç©ºæ°—åŠ› FAB[N]
 if norm(VA) == 0.0
-  xAB = [1; 0; 0]; % ‹@‘ÌÀ•WŒn‘¬“x•ûŒü’PˆÊƒxƒNƒgƒ‹
+  xAB = [1; 0; 0]; % æ©Ÿä½“åº§æ¨™ç³»é€Ÿåº¦æ–¹å‘å˜ä½ãƒ™ã‚¯ãƒˆãƒ«
   VAB = [0; 0; 0];
 else
-  qVAB = quatmultiply(quat, quatmultiply([0 VA'], quatinv(quat)));
-  VAB = qVAB(2:4)';
+  qVAB = quatmultiply(quat, quatmultiply([0; VA], quatinv(quat)));
+  VAB = qVAB(2:4);
   xAB = VAB / norm(VAB);
 end
 yABsintheta = cross(xAB, [1; 0; 0]);
@@ -82,37 +98,37 @@ end
 theta = asin(sintheta);
 zAB = cross(xAB, yAB);
 
-% ‘¬“xÀ•WŒn‚©‚ç‚İ‚½‹ó‹C—Í FAA[N]
+% é€Ÿåº¦åº§æ¨™ç³»ã‹ã‚‰ã¿ãŸç©ºæ°—åŠ› FAA[N]
 CD = cd_Rocket(norm(VAB) / a);
-FAA = -0.5*rho*norm(VA)^2*pa.Area*[CD; 0; pa.CLa * theta];
+FAA = -0.5*rho*norm(VA)^2*Area*[CD; 0; CLa * theta];
 
 DCM_A2B = [xAB yAB zAB];
 FAB = DCM_A2B * FAA;
 
-% ---- d—Í ----
-% …•½À•WŒn‚É‚¨‚¯‚é‹@‘Ì‚É‚©‚©‚éd—Í FHG[N]
+% ---- é‡åŠ› ----
+% æ°´å¹³åº§æ¨™ç³»ã«ãŠã‘ã‚‹æ©Ÿä½“ã«ã‹ã‹ã‚‹é‡åŠ› FHG[N]
 [gc, gnorth] = gravity(x(2), 35*pi/180);
 FGH = x(1) * [gc; 0; gnorth];
 
-% ---- ƒ‚[ƒƒ“ƒg ----
-% „—Í‚É‚æ‚éƒ‚[ƒƒ“ƒg MT[Nm]
-% ‹ó‹C—Í‚É‚æ‚éƒ‚[ƒƒ“ƒg MA[Nm]
-MT = -cross(FTB, pa.length_GCM);
-MA = -cross(FAB, pa.length_A);
+% ---- ãƒ¢ãƒ¼ãƒ¡ãƒ³ãƒˆ ----
+% æ¨åŠ›ã«ã‚ˆã‚‹ãƒ¢ãƒ¼ãƒ¡ãƒ³ãƒˆ MT[Nm]
+% ç©ºæ°—åŠ›ã«ã‚ˆã‚‹ãƒ¢ãƒ¼ãƒ¡ãƒ³ãƒˆ MA[Nm]
+MT = -cross(FTB, length_GCM);
+MA = -cross(FAB, length_A);
 M = MT + MA;
 
-% ---- ‘¬“x‰^“®•û’ö® ----
-qFTAH = quatmultiply(quatinv(quat),quatmultiply([0 (FTB+FAB)'], quat));
-FTAH = qFTAH(2:4)';
+% ---- é€Ÿåº¦é‹å‹•æ–¹ç¨‹å¼ ----
+qFTAH = quatmultiply(quatinv(quat),quatmultiply([0; (FTB+FAB)], quat));
+FTAH = qFTAH(2:4);
 delta_V = 1/x(1)*(FTAH + FGH);
 
-% ---- p¨‚Ì‰^“®•û’ö®----
-delta_quat = -0.5 * quatmultiply([0 x(12) x(13) x(14)], [x(8) x(9) x(10) x(11)]);
+% ---- å§¿å‹¢ã®é‹å‹•æ–¹ç¨‹å¼----
+delta_quat = -0.5 * quatmultiply([0; x(12:14)], x(8:11));
 
-% ---- Šp‘¬“x‚Ì‰^“®•û’ö®----
-delta_omega(1) = 1/pa.IXX * (M(1) - IXXdot * x(12) - (pa.IZZ - pa.IYY) * x(13) * x(14));
-delta_omega(2) = 1/pa.IYY * (M(2) - IYYdot * x(13) - (pa.IXX - pa.IZZ) * x(14) * x(12));
-delta_omega(3) = 1/pa.IXX * (M(3) - IZZdot * x(14) - (pa.IYY - pa.IXX) * x(12) * x(13));
+% ---- è§’é€Ÿåº¦ã®é‹å‹•æ–¹ç¨‹å¼----
+delta_omega(1) = 1/IXX * (M(1) - IXXdot * x(12) - (IZZ - IYY) * x(13) * x(14));
+delta_omega(2) = 1/IYY * (M(2) - IYYdot * x(13) - (IXX - IZZ) * x(14) * x(12));
+delta_omega(3) = 1/IXX * (M(3) - IZZdot * x(14) - (IYY - IXX) * x(12) * x(13));
 
 dx = [ delta_m;
 x(5);
