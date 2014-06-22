@@ -29,7 +29,7 @@ function [ dx ] = rocket_dynamics( t, x, u )
 % 
 
 % 機体のパラメータ読み込み
-params_rocket;
+%pa = params_rocket();
 
 IXXdot = 0;
 IYYdot = 0;
@@ -45,8 +45,8 @@ deltaP = 0;
 
 % 定格推力 FT[N] その時刻における推力 Ft[N]
 % 推進剤の質量流量 delta_m[kg/s]
-Ft = thrust(t, [Tend], [FT]); 
-delta_m = -Ft / Isp / g0;
+Ft = thrust(t, [pa.Tend], [pa.FT]); 
+delta_m = -Ft / pa.Isp / pa.g0;
 
 % ジンバル角を考慮した機体座標系における推力 FTB[N]
 FTB = Ft * [cos(deltaY)*cos(deltaP); -sin(deltaY); -cos(deltaY)*sin(deltaP)];
@@ -84,7 +84,7 @@ zAB = cross(xAB, yAB);
 
 % 速度座標系からみた空気力 FAA[N]
 CD = cd_Rocket(norm(VAB) / a);
-FAA = -0.5*rho*norm(VA)^2*Area*[CD; 0; CLa * theta];
+FAA = -0.5*rho*norm(VA)^2*pa.Area*[CD; 0; pa.CLa * theta];
 
 DCM_A2B = [xAB yAB zAB];
 FAB = DCM_A2B * FAA;
@@ -97,8 +97,8 @@ FGH = x(1) * [gc; 0; gnorth];
 % ---- モーメント ----
 % 推力によるモーメント MT[Nm]
 % 空気力によるモーメント MA[Nm]
-MT = -cross(FTB, length_GCM);
-MA = -cross(FAB, length_A);
+MT = -cross(FTB, pa.length_GCM);
+MA = -cross(FAB, pa.length_A);
 M = MT + MA;
 
 % ---- 速度運動方程式 ----
@@ -110,9 +110,9 @@ delta_V = 1/x(1)*(FTAH + FGH);
 delta_quat = -0.5 * quatmultiply([0 x(12) x(13) x(14)], [x(8) x(9) x(10) x(11)]);
 
 % ---- 角速度の運動方程式----
-delta_omega(1) = 1/IXX * (M(1) - IXXdot * x(12) - (IZZ - IYY) * x(13) * x(14));
-delta_omega(2) = 1/IYY * (M(2) - IYYdot * x(13) - (IXX - IZZ) * x(14) * x(12));
-delta_omega(3) = 1/IXX * (M(3) - IZZdot * x(14) - (IYY - IXX) * x(12) * x(13));
+delta_omega(1) = 1/pa.IXX * (M(1) - IXXdot * x(12) - (pa.IZZ - pa.IYY) * x(13) * x(14));
+delta_omega(2) = 1/pa.IYY * (M(2) - IYYdot * x(13) - (pa.IXX - pa.IZZ) * x(14) * x(12));
+delta_omega(3) = 1/pa.IXX * (M(3) - IZZdot * x(14) - (pa.IYY - pa.IXX) * x(12) * x(13));
 
 dx = [ delta_m;
 x(5);
