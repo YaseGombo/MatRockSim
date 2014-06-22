@@ -2,14 +2,14 @@
 % odeのためのロケット飛翔の常微分方程式
 % 位置と姿勢を求めるために、「位置、速度、姿勢、角速度」を状態量に。
 % 
-% やってること
+% やっていること
 % 機体にかかる推力、空気力、重力の算出 
 % -> 機体にかかるモーメントの算出
 % -> 位置の運動方程式、速度の運動方程式、姿勢の運動方程式、角速度の運動方程式
 % 
 % 水平座標系の取り方はxyzの順番にUp-East-North
 % ----
-function [ dx ] = rocket_dynamics( t, x )
+function [ dx ] = rocket_dynamics( t, x, u )
 % x(1): mass 質量[kg]
 % x(2): X_H 射点座標位置[m]
 % x(3): Y_H 射点座標位置[m]
@@ -25,13 +25,15 @@ function [ dx ] = rocket_dynamics( t, x )
 % x(13): omegaY 機体座標系の角速度[rad/s]
 % x(14): omegaZ 機体座標系の角速度[rad/s]
 % ----
+% u(1): Ft 推力[N]
+% 
 
-global Isp g0
-global FT Tend At CD CLa area
-global length_GCM length_A
-global IXX IYY IZZ
-global IXXdot IYYdot IZZdot
-global VWH
+% 機体のパラメータ読み込み
+params_rocket;
+
+IXXdot = 0;
+IYYdot = 0;
+IZZdot = 0;
 
 % ---- 推力 ----
 % ジンバル角度 delta_Y, delta_P[rad]
@@ -39,8 +41,6 @@ deltaY = 0;
 deltaP = 0;
 
 % 大気圧 P[Pa] 大気密度 rho[kg/m3]
-% P = 101325;
-% rho = 1.2;
 [~, a, P, rho] = atmosphere_Rocket(x(2));
 
 % 定格推力 FT[N] その時刻における推力 Ft[N]
@@ -84,8 +84,7 @@ zAB = cross(xAB, yAB);
 
 % 速度座標系からみた空気力 FAA[N]
 CD = cd_Rocket(norm(VAB) / a);
-FAA = -0.5*rho*norm(VA)^2*area*[CD; 0; CLa * theta];
-% FAA = -0.5*rho*norm(VA)^2*area*[CD; 0; CLa * theta];
+FAA = -0.5*rho*norm(VA)^2*Area*[CD; 0; CLa * theta];
 
 DCM_A2B = [xAB yAB zAB];
 FAB = DCM_A2B * FAA;

@@ -42,7 +42,7 @@ VWH = [0; 0; 0];
 % para_Cd: パラシュート抗力係数[-]
 % para_Dia: パラシュート開傘時の直径[m]
 % para_S: パラシュート面積[m2]
-para_exist = true;
+para_exist = false;
 para_Cd = 1.0;
 para_Dia = 1.5;
 time_parachute = 15;

@@ -1,0 +1,25 @@
+% ---- 機体のパラメータ設定 ----
+% m0: 初期質量[kg]
+% Isp: 比推力[sec]
+% g0: 地上での重力加速度[m/s2]
+% FT: 推力[N]
+% Tend: 燃焼時間[sec]
+% At: スロート径[m2]
+% Area: 機体の断面積[m2]
+% CLa: 揚力傾斜[/rad]
+% CD: 抗力係数[-]
+% length_GCM: エンジンピボット点からの重心位置ベクトル[m](3x1)
+% length_A: エンジンピボット点からの空力中心点位置ベクトル[m] (3x1)
+% IXX,IYY,IZZ: 慣性モーメント[kgm2]
+% azimth, elevation: 初期姿勢の方位角、仰角[deg]
+m0 = 4.0;
+Isp = 200;
+g0 = 9.80665;
+FT = 150;
+Tend = 4;
+At = 0.01;
+Area = 0.010;
+CLa = 3.5;
+length_GCM = [-0.70; 0; 0]; length_A = [-0.50; 0; 0];
+IXX = 5; IYY = 5; IZZ = 1;
+azimth = 45; elevation = 80;

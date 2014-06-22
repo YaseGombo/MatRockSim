@@ -25,12 +25,12 @@ params
 % params_M3S
 
 % ---- í”÷•ª•û’öŽ® ----
-AbsTol = [1e-4; % m
-          1e-4; 1e-4; 1e-4; % pos
-          1e-4; 1e-4; 1e-4; % vel
-          1e-4; 1e-4; 1e-4; 1e-4; %quat
-          1e-3; 1e-3; 1e-3]; % omega
-options = odeset('Events', @events_land, 'RelTol', 1e-3, 'AbsTol', AbsTol);
+AbsTol = [1e-6; % m
+          1e-6; 1e-6; 1e-6; % pos
+          1e-6; 1e-6; 1e-6; % vel
+          1e-6; 1e-6; 1e-6; 1e-6; %quat
+          1e-4; 1e-4; 1e-4]; % omega
+options = odeset('Events', @events_land, 'RelTol', 1e-4, 'AbsTol', AbsTol);
 
 time_end = 400;
 if time_parachute > time_end
