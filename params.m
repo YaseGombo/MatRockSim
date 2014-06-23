@@ -4,10 +4,9 @@
 %global length_GCM length_A
 %global IXX IYY IZZ
 %global IXXdot IYYdot IZZdot
-%global VWH
+global VWH
 global ROCKET;
 global para_Cd para_S
-
 
 % ---- パラメータ設定 ----
 % m0: 初期質量[kg]
@@ -21,10 +20,8 @@ global para_Cd para_S
 % CD: 抗力係数[-]
 % length_GCM: エンジンピボット点からの重心位置ベクトル[m](3x1)
 % length_A: エンジンピボット点からの空力中心点位置ベクトル[m] (3x1)
-% IXX,IYY,IZZ: 慣性モーメント[kgm2]
-% IXXdot,IYYdot,IZZdot: 慣性モーメントの時間変化[kgm2/sec]
+% Ijj: 慣性モーメント対角要素[kgm2] (3x1)
 % azimth, elevation: 初期姿勢の方位角、仰角[deg]
-% VWH:　水平座標系においての風速(Up-East-North) [m/s] (3x1)
 ROCKET = struct( ...
 'm0', 4.0, ...
 'Isp', 200, ...
@@ -34,19 +31,22 @@ ROCKET = struct( ...
 'At', 0.01, ...
 'Area', 0.010, ...
 'CLa', 3.5, ...
-'length_GCM', [-0.70 0 0], ...
-'length_A', [-0.50 0 0], ...
-'Ijj', [1 5 5], ...
+'length_GCM', [-0.70; 0; 0], ...
+'length_A', [-0.50; 0; 0], ...
+'Ijj', [1; 5; 5], ...
 'azimth', 45, ...
 'elevation', 80 ...
 );
+
+% VWH:　水平座標系においての風速(Up-East-North) [m/s] (3x1)
+VWH = [0; 0; 0];
 
 % ---- パラシュート ----
 % para_exist : パラシュートがあるかどうか[true,false]
 % para_Cd: パラシュート抗力係数[-]
 % para_Dia: パラシュート開傘時の直径[m]
 % para_S: パラシュート面積[m2]
-para_exist = true;
+para_exist = false;
 para_Cd = 1.0;
 para_Dia = 1.5;
 time_parachute = 15;
