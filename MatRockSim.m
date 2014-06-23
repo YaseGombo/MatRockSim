@@ -12,7 +12,7 @@
 % OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 % THE SOFTWARE.
 % ======================
-clear global;  clear all; close all;
+clear global; clear all; close all;
 
 addpath ./quaternion
 addpath ./environment
@@ -25,12 +25,12 @@ params
 % params_M3S
 
 % ---- 常微分方程式 ----
-AbsTol = [1e-6; % m
-          1e-6; 1e-6; 1e-6; % pos
-          1e-6; 1e-6; 1e-6; % vel
-          1e-6; 1e-6; 1e-6; 1e-6; %quat
-          1e-4; 1e-4; 1e-4]; % omega
-options = odeset('Events', @events_land, 'RelTol', 1e-4, 'AbsTol', AbsTol);
+AbsTol = [1e-4; % m
+          1e-4; 1e-4; 1e-4; % pos
+          1e-4; 1e-4; 1e-4; % vel
+          1e-4; 1e-4; 1e-4; 1e-4; %quat
+          1e-3; 1e-3; 1e-3]; % omega
+options = odeset('Events', @events_land, 'RelTol', 1e-3, 'AbsTol', AbsTol);
 
 time_end = 400;
 if time_parachute > time_end
@@ -42,7 +42,7 @@ disp('Start Simulation...');
 % パラシュートの有無でシミュレーションの場合分け
 if para_exist == true
   tic
-  [T_rocket, X_rocket] = ode23s(@rocket_dynamics, [0 time_parachute], x0, options);
+  [T_rocket, X_rocket] = ode23s(@rocket_dynamics_wrapper, [0 time_parachute], x0, options);
   toc;tic
   [T_parachute, X_parachute] = ode23s(@parachute_dynamics, [time_parachute time_end], X_rocket(length(X_rocket),:), options);
   toc
@@ -51,7 +51,7 @@ if para_exist == true
 else
   % パラボリックフライト
   tic
-  [T, X] = ode23s(@rocket_dynamics, [0 time_end], x0, options);
+  [T, X] = ode23s(@rocket_dynamics_wrapper, [0 time_end], x0, options);
   toc
 end
 

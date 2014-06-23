@@ -9,5 +9,5 @@ function o = quatmultiply(q, p)
 	o2 = q(2)*p(1)+q(1)*p(2)-q(4)*p(3)+q(3)*p(4);
 	o3 = q(3)*p(1)+q(4)*p(2)+q(1)*p(3)-q(2)*p(4);
 	o4 = q(4)*p(1)-q(3)*p(2)+q(2)*p(3)+q(1)*p(4);
-	o = [o1; o2; o3; o4];
+	o = [o1 o2 o3 o4];
 end

@@ -1,11 +1,13 @@
 % ---- グローバル変数の設定（いじらない） ----
-global Isp g0
-global FT Tend At CLa Area
-global length_GCM length_A
-global IXX IYY IZZ
-global IXXdot IYYdot IZZdot
-global VWH
+%global Isp g0
+%global FT Tend At CLa Area
+%global length_GCM length_A
+%global IXX IYY IZZ
+%global IXXdot IYYdot IZZdot
+%global VWH
+global ROCKET;
 global para_Cd para_S
+
 
 % ---- パラメータ設定 ----
 % m0: 初期質量[kg]
@@ -23,26 +25,28 @@ global para_Cd para_S
 % IXXdot,IYYdot,IZZdot: 慣性モーメントの時間変化[kgm2/sec]
 % azimth, elevation: 初期姿勢の方位角、仰角[deg]
 % VWH:　水平座標系においての風速(Up-East-North) [m/s] (3x1)
-m0 = 4.0;
-Isp = 200;
-g0 = 9.80665;
-FT = 150;
-Tend = 4;
-At = 0.01;
-Area = 0.010;
-CLa = 3.5;
-length_GCM = [-0.70; 0; 0]; length_A = [-0.50; 0; 0];
-IXX = 5; IYY = 5; IZZ = 1;
-IXXdot = 0; IYYdot = 0; IZZdot = 0;
-azimth = 45; elevation = 80;
-VWH = [0; 0; 0];
+ROCKET = struct( ...
+'m0', 4.0, ...
+'Isp', 200, ...
+'g0', 9.80665, ...
+'FT', [150], ...
+'Tend', [4], ...
+'At', 0.01, ...
+'Area', 0.010, ...
+'CLa', 3.5, ...
+'length_GCM', [-0.70 0 0], ...
+'length_A', [-0.50 0 0], ...
+'Ijj', [1 5 5], ...
+'azimth', 45, ...
+'elevation', 80 ...
+);
 
 % ---- パラシュート ----
 % para_exist : パラシュートがあるかどうか[true,false]
 % para_Cd: パラシュート抗力係数[-]
 % para_Dia: パラシュート開傘時の直径[m]
 % para_S: パラシュート面積[m2]
-para_exist = false;
+para_exist = true;
 para_Cd = 1.0;
 para_Dia = 1.5;
 time_parachute = 15;
@@ -55,9 +59,9 @@ para_S = para_Dia * para_Dia / 4 * pi;
 % omega0: 機体座標系における機体に働く角速度[rad/s] (3x1)
 pos0 = [0.0; 0.0; 0.0]; % m
 vel0 = [0.0; 0.0; 0.0]; % m/s
-quat0 = attitude(azimth, elevation);
+quat0 = attitude(ROCKET.azimth, ROCKET.elevation)';
 omega0 = [0.0; 0.0; 0.0]; % rad/s
-x0 = [m0; pos0; vel0; quat0; omega0];
+x0 = [ROCKET.m0; pos0; vel0; quat0; omega0];
 
 
 % ---- mappingのための変数 ----
